@@ -101,9 +101,16 @@ Ciclo de vida del mosquito
 
 
 ## [Como Puedo Identificar Si Tengo Dengue]{style="color:#003300;" .r-fit-text}
-<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+
+![](GUve7nVXkAAxFWJ.jpeg){fig-align="center"}
+
+
+## [Como Puedo Identificar Si Tengo Dengue]{style="color:#003300;" .r-fit-text}
+
 
 ![](sintomas_alarma.png){fig-align="center"}
+
 
 ## [Situación Epidemiológica del Dengue a Nivel Mundial]{style="color:#003300;" .r-fit-text}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
@@ -295,7 +302,7 @@ mapview::mapview(probables,
 ![](medidas_preventivas_ssa.png){fig-align="center"}
 :::
 
-::: {.column width="45%"}
+::: {.column width="50%"}
 ![](guia_del_hogar.png){fig-align="center"}
 :::
 ::::
