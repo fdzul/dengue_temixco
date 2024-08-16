@@ -77,16 +77,15 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/static_bump_map.R")
 ## [Ciclo de Transmisión del Dengue y Ciclo de Vida del Vector]{style="color:#003300;" .r-fit-text}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
 
-:::: {.columns}
-::: {.column width="50%"}
+::: {layout-ncol=2}
 Ciclo de Transmisión del Dengue
 ![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro1690/MediaObjects/41579_2007_Article_BFnrmicro1690_Fig2_HTML.jpg?as=webp)
-:::
-::: {.column width="50%"}
+
 Ciclo de vida del mosquito
 ![](https://www.nature.com/scitable/content/ne0000/ne0000/ne0000/ne0000/22400575/2_1.jpg)
+
 :::
-::::
+
 
 ## [Como Puedo Identificar Si Tengo Dengue]{style="color:#003300;" .r-fit-text}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
@@ -292,7 +291,6 @@ mapview::mapview(probables,
 ## [Que puedo hacer para prevenir el dengue]{style="color:#003300;" .r-fit-text}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
 
-
 ::: {layout-ncol=2}
 
 ![](medidas_preventivas_ssa.png){fig-align="center"}
@@ -300,7 +298,6 @@ mapview::mapview(probables,
 ![](guia_del_hogar.png){fig-align="center"}
 
 :::
-
 
 
 ## [Que puedo hacer para evitar la picadura del mosquito]{style="color:#003300;" .r-fit-text}
