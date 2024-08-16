@@ -1,0 +1,349 @@
+---
+format: 
+  revealjs:
+    code-block-bg: true
+    code-block-background: true
+    code-copy: true
+    chalkboard: true
+    highlight-style: github
+    slide-number: c/t
+    logo: https://github.com/fdzul/spatial_analysis_dengue_R_2024_talks/blob/main/talks/pkg_installation/logo_cenaprece.jpeg?raw=true
+    footer: "[github.com/fdzul](https://github.com/fdzul)"
+    center-title-slide: true
+---
+
+<h2>
+[Situación Epidemiológica del Dengue en Temixco, Morelos ]{style="color:#003300;"}.</h2>
+
+<h2>
+
+</h2>
+
+<hr>
+
+<h4>
+
+[Dr. Felipe Dzul Manzanilla]{style="color:#620002;"} 
+
+</h3>
+
+<h4>
+
+</h3>
+
+<h4>
+
+Dr. Herón Huerta
+
+</h3>
+
+<h4>
+
+Dra. Grea Moreno-Banda
+
+</h3>
+
+</h4>
+
+</h4>
+
+<h5>
+
+Fecha: 2024-08-16
+
+</h5>
+
+<br>
+
+<h4>
+
+
+![](dengue_temixco.png){.absolute top="280" left="480" width="550"}
+
+```{r setup, echo=FALSE}
+# Step 2. load the dataset ####
+path_sinave <- "/Users/fdzul/Library/CloudStorage/OneDrive-Personal/datasets/DGE/denv/2024/DENGUE2_.txt"
+
+x <- denhotspots::read_dengue_dataset(path = path_sinave,
+                                      spatial_resolution = "country",
+                                      status_caso = c(1, 2))
+
+# Step 1. load the dataset 
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/static_bump_map.R")
+
+```
+
+
+## [Ciclo de Transmisión del Dengue y Ciclo de Vida del Vector]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+:::: {.columns}
+::: {.column width="50%"}
+Ciclo de Transmisión del Dengue
+![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro1690/MediaObjects/41579_2007_Article_BFnrmicro1690_Fig2_HTML.jpg?as=webp)
+:::
+::: {.column width="50%"}
+Ciclo de vida del mosquito
+![](https://www.nature.com/scitable/content/ne0000/ne0000/ne0000/ne0000/22400575/2_1.jpg)
+:::
+::::
+
+## [Como Puedo Identificar Si Tengo Dengue]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+:::: {.columns}
+::: {.column width="50%"}
+![](sintomas_ssa_yuc.png)
+:::
+::: {.column width="50%"}
+![](sintomas_ops.png)
+:::
+::::
+
+
+## [Como Puedo Identificar Si Tengo Dengue]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](sintomas_alarma.png){fig-align="center"}
+
+## [Situación Epidemiológica del Dengue a Nivel Mundial]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](https://www.ecdc.europa.eu/sites/default/files/styles/is_large/public/images/20240730151155_Dengue_12_months_rate.png?itok=Ud-_9IoQ){fig-align="center"}
+
+## [Situación Epidemiológica del Dengue en México]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r bumpmap_national_2024, out.width="120%", out.height="100%"}
+library(dplyr)
+static_bump_map(dataset = x,
+                year = "2024",
+                state = TRUE,
+                size_text_value = 4,
+                size_text = 3,
+                country_text_x = 0.5,
+                country_text_y = 0.8,
+                line_size = 1.5,
+                pal_vir = "viridis")
+```
+
+
+## [Situación Epidemiológica del Dengue en México]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+```{r, out.width="100%", out.height="90%"}
+library(magrittr)
+boldenr::plot_state_serotype(dataset = x, 
+                             year = 2024, 
+                             x_serotype  = 0.5, 
+                             y_serotype = 0.17, 
+                             scale_serotype = 1.7)
+```
+
+## [Situación Epidemiológica del Dengue en México]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r}
+
+# step 1. load teh dengue dataset ####
+load("~/Library/CloudStorage/OneDrive-Personal/automatic_read_sinave/8.RData/den/den2008_2024.RData")
+
+# Step 2. aggregate the dengue dataset ####
+x1 <- den2008_2015 |>
+    dplyr::filter(VEC_EST == 2) |>
+    #dplyr::filter(CVE_EDO == 17) |>
+    dplyr::group_by(DES_EDO.x, DES_MPO.x, ANO) |>
+    dplyr::summarise(n = dplyr::n(), .groups = "drop") |>
+    dplyr::rename(mpo = DES_MPO.x, 
+                  edo = DES_EDO.x,
+                  year = ANO) 
+# Step 2. aggregate the dengue dataset ####
+y1 <- den2016_2024 |>
+    dplyr::filter(ESTATUS_CASO == 2) |>
+    #dplyr::filter(CVE_EDO_RES == 17) |>
+    dplyr::group_by(DES_EDO_RES,DES_MPO_RES, ANO) |>
+    dplyr::summarise(n = dplyr::n(), .groups = "drop") |>
+    dplyr::rename(mpo = DES_MPO_RES ,
+                  edo = DES_EDO_RES,
+                   year = ANO) 
+
+# Step 3. aggregated dataset ####
+xy <- dplyr::bind_rows(x1, y1)
+
+
+# mexico y morelos ####
+ggplot2::ggplot() +
+    ggplot2::geom_col(data = xy,
+                       ggplot2::aes(x = year,
+                                    y = n),
+                      fill = "#04225CFF")  +
+    ggplot2::geom_col(data = xy |> 
+                          dplyr::filter(edo == "MORELOS"),
+                      ggplot2::aes(x = year,
+                                   y = n),
+                      fill = "#DC3B34FF") +
+    ggplot2::scale_x_continuous(breaks = seq(from = 2008,
+                                             to = 2024,
+                                             by = 1)) +
+    ggplot2::ylab("Casos de Dengue") +
+    ggplot2::xlab("Años") 
+
+```
+
+
+## [Situación Epidemiológica del Dengue en Morelos]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r bumpmap_morelos_2024, out.width="100%", out.height="100%"}
+library(sf)
+static_bump_map(dataset = x,
+                year = 2024,
+                state = FALSE,
+                cve_edo = "17",
+                country_text_x = .01,
+                country_text_y = 0.024,
+                axis_start = 0.5,
+                value_text = 0.37,
+                size_text_value = 4,
+                line_size = 2,
+                size_text_country = 4,
+                pal_vir = "viridis") 
+```
+
+
+## [Situación Entomológica del Dengue en Temixco]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+Casos Probables y Confirmados
+```{r, out.width="100%", out.height="100%"}
+load("/Users/fdzul/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2024/8.RData/denmex_2024.RData")
+densnv::mp_heatmap(locality = "Temixco",
+                   cve_edo = "17",
+                   geocoded_datasets = z,
+                   zoom = 13,
+                   status_caso = c(1, 2),
+                   week = c(1:33),
+                   alpha = 0.2,
+                   static = TRUE,
+                   map_type = "satellite")
+```
+
+
+## [Situación Entomológica del Dengue en Temixco]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r}
+load("/Users/fdzul/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2024/8.RData/denmex_2024.RData")
+
+z <- z |>
+    sf::st_as_sf(coords = c("long", "lat"),
+                 crs = 4326) |>
+    dplyr::mutate(ESTATUS_CASO = ifelse(ESTATUS_CASO == 1,
+                                        "Probable",
+                                        "Confirmado"))
+
+edo <- rgeomex::AGEM_inegi19_mx |>
+    dplyr::filter(CVE_ENT == 17) |>
+    dplyr::filter(NOMGEO == "Temixco")
+
+z <- z[edo,]
+confirmados <- z |>
+    dplyr::filter(ESTATUS_CASO == "Confirmado")
+probables <- z |>
+    dplyr::filter(ESTATUS_CASO == "Probable")
+
+serotype_1 <- z |>
+    dplyr::filter(ESTATUS_CASO == "Confirmado") |>
+    dplyr::filter(DENGUE_SER_TRIPLEX == 1)
+serotype_2 <- z |>
+    dplyr::filter(ESTATUS_CASO == "Confirmado") |>
+    dplyr::filter(DENGUE_SER_TRIPLEX == 2)
+serotype_3 <- z |>
+    dplyr::filter(ESTATUS_CASO == "Confirmado") |>
+    dplyr::filter(DENGUE_SER_TRIPLEX == 3)
+serotype_4 <- z |>
+    dplyr::filter(ESTATUS_CASO == "Confirmado") |>
+    dplyr::filter(DENGUE_SER_TRIPLEX == 4)
+
+##############
+mapview::mapview(probables,
+                 col.regions = "#898F9C",
+                 color = "white",
+                 layer.name = "Probables") +
+    mapview::mapview(confirmados,
+                     col.regions = "#4267B2",
+                     color = "white",
+                     layer.name = "Positivos") +
+    mapview::mapview(serotype_1,
+                     col.regions = "#36C5F0",
+                     color = "white",
+                     layer.name = "DENV-1") +
+    mapview::mapview(serotype_3,
+                     col.regions = "#E01E5A",
+                     color = "white",
+                     layer.name = "DENV-3") 
+```
+
+## [Que puedo hacer para prevenir el dengue]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](casa_criaderos.png){fig-align="center"}
+
+
+## [Que puedo hacer para prevenir el dengue]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](medidas_preventivas_ssa.png){fig-align="center"}
+
+
+
+
+## [Que puedo hacer para prevenir el dengue]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](guia_del_hogar.png){fig-align="center"}
+
+
+## [Que puedo hacer para evitar la picadura del mosquito]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+::: {layout-ncol=2}
+
+![](GUHHl0rXMAA1Rqj.jpeg){}
+
+![](GUHGGqYXEAAojes.jpeg){}
+
+
+:::
+
+
+## [Que puedo hacer para evitar la picadura del mosquito]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+::: {layout-ncol=2}
+
+![](GUHG8JpXIAAX5w3.jpeg){}
+
+
+![](GUHFUMpWEAAm3oL.jpeg){}
+
+:::
+
+## [Que puedo hacer para evitar la picadura del mosquito]{style="color:#003300;" .r-fit-text}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+
+![](GUveGQUXgAAe5po.jpeg){fig-align="center"}
+
+## [Dios Botic]{style="color:#003300;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+-   ***Bio*** : [https://fdzul.github.io/web_site_fadm/]()
+
+-   ***email*** : [felipe.dzul.m@gmail.com]()
+
+-   ***celular*** : [9999580167]()
+
+-   ***slides***: [https://stalwart-kangaroo-fd5f85.netlify.app/talks/vigilancia_entomologica](https://stalwart-kangaroo-fd5f85.netlify.app/talks/vigilancia_entomologica)
+
+
+
