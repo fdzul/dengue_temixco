@@ -289,15 +289,16 @@ mapview::mapview(probables,
 
 
 ## [Que puedo hacer para prevenir el dengue]{style="color:#003300;" .r-fit-text}
-<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
 
-::: {layout-ncol=2}
-
+:::: {.columns}
+::: {.column width="45%"}
 ![](medidas_preventivas_ssa.png){fig-align="center"}
-
-![](guia_del_hogar.png){fig-align="center"}
-
 :::
+
+::: {.column width="45%"}
+![](guia_del_hogar.png){fig-align="center"}
+:::
+::::
 
 
 ## [Que puedo hacer para evitar la picadura del mosquito]{style="color:#003300;" .r-fit-text}
